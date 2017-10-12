@@ -61,6 +61,9 @@ chrom.close()
 print sys.stderr, "read gtf ...\n"
 
 def rev(text):
+
+    new = ''
+    
     for a in text:
         if a == 'A':
             new += 'T'
@@ -101,14 +104,17 @@ start_flag = 1
 
 for line in gtf:
 
+    words = line.split('\t')
 
-    if line[0] != '#':
+    if line[0] != '#' and (words[2] == "CDS" or words[2] == "stop_codon"):
         #comment
-        words = line.split('\t')
-        print sys.stderr, words[0]
-        print sys.stderr, words[1]	
+        
+        # print sys.stderr, words[0]
+        # print sys.stderr, words[1]	
+
         print sys.stderr, "found new CDS/codon"
 
+        print sys.stderr, words[8]
         tid = words[8].split("transcript_id \"")[1]
         tid = tid.split("\"")[0]
 
