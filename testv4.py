@@ -16,40 +16,47 @@ chrom = open(sys.argv[1], "r")
 
 dic = {}
 c =' '
+ct = 0;
 
 for l in chrom:
+	# print sys.stderr, ct
+	ct += 1
 
-    if l[0] == '>':
-        c = l.split(' ')[0]
-        c = c[1:]
+	if l[0] == '>':
+		c = l.split(' ')[0]
+		c = c[1:]
         print sys.stderr, "new c\n" + c
         dic[c] = ''
-
-    else:
+	
+	else:
         dic[c] += l.strip('\n')
-        print sys.stderr, l.strip('\n')
-        print sys.stderr, "dic section\n" + dic[c][:1000]
-        # print sys.stderr, "dic" + dic[c]
+    	#print sys.stderr, l.strip('\n')
+    	#print sys.stderr, "dic section\n" + dic[c][:100]
+    	# print sys.stderr, "dic" + dic[c]
 
 chrom.close()
+
+
+
+
 
 
 
 print sys.stderr, "read gtf ...\n"
 
 def rev(text):
-    for a in text:
-        if a == 'A':
+	for a in text:
+		if a == 'A':
             new += 'T'
         elif a == 'T':
-            new += 'A'
-        elif a == 'G':
-            new += 'C'
+        	new += 'A'
+    	elif a == 'G':
+        	new += 'C'
         elif a == 'C':
-            new += 'G'
-        else:
-            new += a
-    return new[::-1]
+        	new += 'G'
+    	else:
+        	new += a
+	return new[::-1]
 
 
 def get_seq(chro, begin, end, symbol):
@@ -68,6 +75,9 @@ def get_seq(chro, begin, end, symbol):
 
 
 
+
+
+
 gtf = open(sys.argv[2],"r")
 
 ptid = ''
@@ -76,33 +86,33 @@ start_flag = 1
 
 for line in gtf:
 
-    if l[0] == '#':
+    if line[0] == '#':
         break
 
     else:
         words = line.split('\t')
+        print sys.stderr, words[0]
+        print sys.stderr, words[1]	
+        print sys.stderr, "found new CDS/codon"
 
-        if words[2] == "CDS" or words[2] == "stop_codon":
-            print sys.stderr, "found new CDS/codon"
+        tid = words[8].split("transcript_id \"")[1]
+        tid = tid.split("\"")[0]
 
-            tid = words[8].split("transcript_id \"")[1]
-            tid = tid.split("\"")[0]
+        if tid == ptid:
+        	seq += get_seq(words[0], words[3], words[4], words[6])
 
-            if tid == ptid:
-                seq += get_seq(words[0], words[3], words[4], words[6])
+        elif start_flag == 1:
+            print sys.stderr,"first"
+            start_flag = 0
 
-            elif start_flag == 1:
-                print sys.stderr,"first"
-                start_flag = 0
+        else:
+        	print sys.stdout,">" + ptid + "\n"
+            seplist = textwrap.wrap(seq, 60)
+            print sys.stdout, '\n'.join(seplist) + "\n"
 
-            else:
-                print sys.stdout,">" + ptid + "\n"
-                seplist = textwrap.wrap(seq, 60)
-                print sys.stdout, '\n'.join(seplist) + "\n"
-
-                print sys.stderr, "new ptid"
-                ptid = tid
-                seq = get_seq(words[0], words[3], words[4],words[6])
+            print sys.stderr, "new ptid"
+            ptid = tid
+            seq = get_seq(words[0], words[3], words[4],words[6])
 
 
 print sys.stdout,">" + ptid + "\n"
