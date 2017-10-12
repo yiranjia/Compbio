@@ -37,7 +37,6 @@ chrom.close()
 
 print sys.stderr, "read gtf ...\n"
 
-
 def rev(text):
     for a in text:
         if a == 'A':
@@ -75,19 +74,13 @@ ptid = ''
 seq = ''
 start_flag = 1
 
-
-print sys.stderr, "going into loop"
-
 for line in gtf:
-
 
     if l[0] == '#':
         break
 
     else:
         words = line.split('\t')
-        print sys.stderr, 'test' + words[0]
-
 
         if words[2] == "CDS" or words[2] == "stop_codon":
             print sys.stderr, "found new CDS/codon"
