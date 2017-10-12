@@ -19,16 +19,17 @@ c =' '
 ct = 0;
 
 for l in chrom:
-	# print sys.stderr, ct
-	ct += 1
+    # print sys.stderr, ct
+    ct += 1
 
-	if l[0] == '>':
-		c = l.split(' ')[0]
-		c = c[1:]
+    if l[0] == '>':
+    	c = l.split(' ')[0]
+        c = c[1:]
         print sys.stderr, "new c\n" + c
         dic[c] = ''
-	
-	else:
+    
+    else:
+        #comment
         dic[c] += l.strip('\n')
     	#print sys.stderr, l.strip('\n')
     	#print sys.stderr, "dic section\n" + dic[c][:100]
@@ -45,22 +46,21 @@ chrom.close()
 print sys.stderr, "read gtf ...\n"
 
 def rev(text):
-	for a in text:
-		if a == 'A':
+    for a in text:
+        if a == 'A':
             new += 'T'
         elif a == 'T':
         	new += 'A'
     	elif a == 'G':
         	new += 'C'
         elif a == 'C':
-        	new += 'G'
+            new += 'G'
     	else:
-        	new += a
-	return new[::-1]
+            new += a
+    return new[::-1]
 
 
 def get_seq(chro, begin, end, symbol):
-
     seq = dic[chro]
     begin = int(begin)
     end = int(end)
@@ -69,7 +69,7 @@ def get_seq(chro, begin, end, symbol):
 
     if (symbol == '-'):
         s = rev(s)
-
+    
     return(s)
 
 
@@ -86,10 +86,9 @@ start_flag = 1
 
 for line in gtf:
 
-    if line[0] == '#':
-        break
 
-    else:
+    if line[0] != '#':
+        #comment
         words = line.split('\t')
         print sys.stderr, words[0]
         print sys.stderr, words[1]	
@@ -104,9 +103,9 @@ for line in gtf:
         elif start_flag == 1:
             print sys.stderr,"first"
             start_flag = 0
-
+        
         else:
-        	print sys.stdout,">" + ptid + "\n"
+            print sys.stdout,">" + ptid + "\n"
             seplist = textwrap.wrap(seq, 60)
             print sys.stdout, '\n'.join(seplist) + "\n"
 
