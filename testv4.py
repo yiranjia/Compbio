@@ -63,7 +63,7 @@ print sys.stderr, "read gtf ...\n"
 def rev(text):
 
     new = ''
-    
+
     for a in text:
         if a == 'A':
             new += 'T'
@@ -112,9 +112,9 @@ for line in gtf:
         # print sys.stderr, words[0]
         # print sys.stderr, words[1]	
 
-        print sys.stderr, "found new CDS/codon"
+        #print sys.stderr, "found new CDS/codon"
 
-        print sys.stderr, words[8]
+        #print sys.stderr, words[8]
         tid = words[8].split("transcript_id \"")[1]
         tid = tid.split("\"")[0]
 
@@ -122,7 +122,7 @@ for line in gtf:
         	seq += get_seq(words[0], words[3], words[4], words[6])
 
         elif start_flag == 1:
-            print sys.stderr,"first"
+            #print sys.stderr,"first"
             start_flag = 0
         
         else:
@@ -130,7 +130,7 @@ for line in gtf:
             seplist = textwrap.wrap(seq, 60)
             print sys.stdout, '\n'.join(seplist) + "\n"
 
-            print sys.stderr, "new ptid"
+            print sys.stderr, "new ptid" + tid
             ptid = tid
             seq = get_seq(words[0], words[3], words[4],words[6])
 
