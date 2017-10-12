@@ -23,7 +23,7 @@ for l in chrom:
     ct += 1
 
     if l[0] == '>':
-    	c = l.split(' ')[0]
+        c = l.split(' ')[0]
         c = c[1:]
         print sys.stderr, "new c\n" + c
         dic[c] = ''
