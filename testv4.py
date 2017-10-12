@@ -15,25 +15,40 @@ print sys.stderr, "read genom... \n"
 chrom = open(sys.argv[1], "r")
 
 dic = {}
-c =' '
+c = ''
 ct = 0;
+start = 1
 
 for l in chrom:
     # print sys.stderr, ct
     ct += 1
 
     if l[0] == '>':
-        c = l.split(' ')[0]
-        c = c[1:]
-        print sys.stderr, "new c\n" + c
-        dic[c] = ''
+
+        if start == 1:
+            c = l.split(' ')[0]
+            c = c[1:]
+            print sys.stderr, "new c\n" + c
+            temstr = ''
+            start = 0
+
+
+        else:
+            dic[c] = temstr
+            c = l.split(' ')[0]
+            c = c[1:]
+            print sys.stderr, "new c\n" + c
+            temstr = ''
     
     else:
         #comment
-        dic[c] += l.strip('\n')
+        temstr += l.strip('\n')
     	#print sys.stderr, l.strip('\n')
     	#print sys.stderr, "dic section\n" + dic[c][:100]
     	# print sys.stderr, "dic" + dic[c]
+
+
+dic[c] = temstr
 
 chrom.close()
 
