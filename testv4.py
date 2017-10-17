@@ -11,7 +11,7 @@ if len(sys.argv) != 3:
 
 
 # read genome sequences
-print sys.stderr, "read genom... \n"
+print >> sys.stderr, "read genom... \n"
 chrom = open(sys.argv[1], "r")
 
 dic = {}
@@ -23,12 +23,15 @@ for l in chrom:
     # print sys.stderr, ct
     ct += 1
 
+    if 'CHR' in l[0:5]:
+    	break
+
     if l[0] == '>':
 
         if start == 1:
             c = l.split(' ')[0]
             c = c[1:]
-            print sys.stderr, "new c\n" + c
+            print >> sys.stderr, "new c\n" + c
             temstr = ''
             start = 0
 
@@ -37,7 +40,7 @@ for l in chrom:
             dic[c] = temstr
             c = l.split(' ')[0]
             c = c[1:]
-            print sys.stderr, "new c\n" + c
+            print >> sys.stderr, "new c\n" + c
             temstr = ''
     
     else:
@@ -58,7 +61,7 @@ chrom.close()
 
 
 
-print sys.stderr, "read gtf ...\n"
+print >> sys.stderr, "read gtf ...\n"
 
 def rev(text):
 
@@ -124,19 +127,21 @@ for line in gtf:
         elif start_flag == 1:
             #print sys.stderr,"first"
             start_flag = 0
+            ptid = tid
+            seq = get_seq(words[0], words[3], words[4],words[6])
         
         else:
-            print sys.stdout,">" + ptid + "\n"
+            print >> sys.stdout,">" + ptid + "\n"
             seplist = textwrap.wrap(seq, 60)
-            print sys.stdout, '\n'.join(seplist) + "\n"
+            print >> sys.stdout, '\n'.join(seplist) + "\n"
 
-            print sys.stderr, "new ptid" + tid
+            print >> sys.stderr, "new ptid" + tid
             ptid = tid
             seq = get_seq(words[0], words[3], words[4],words[6])
 
 
-print sys.stdout,">" + ptid + "\n"
+print >> sys.stdout,">" + ptid + "\n"
 seplist = textwrap.wrap(seq, 60)
-print sys.stdout, '\n'.join(seplist) + "\n"
+print >> sys.stdout, '\n'.join(seplist) + "\n"
 
 gtf.close()
